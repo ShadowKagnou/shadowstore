@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowStore</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="store-container">
+
+        <header class="store-header">
+            <div class="logo-area" onclick="openProfileModal()" title="Lihat Profil Toko">
+                <img src="logoaplikasi/logotoko.png" alt="Logo ShadowStore" class="logo-icon">
+                <span class="logo-text"><span class="logo-shadow">Shadow</span><span
+                        class="logo-store">Store</span></span>
+            </div>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari nama tema..." oninput="cariProduk(this.value)">
+                <span class="clear-icon" onclick="resetCari()">✕</span>
+            </div>
+            <div class="contact-btn" onclick="hubungiWhatsApp()">
+                <span class="whatsapp-icon">💬</span> Hubungi
+            </div>
+        </header>
+
+        <nav class="category-nav">
+            <button class="cat-btn active" onclick="filterProduk('semua', this)">Semua</button>
+            <button class="cat-btn" onclick="filterProduk('game', this)">Tema Game</button>
+            <button class="cat-btn" onclick="filterProduk('anime', this)">Tema Anime</button>
+            <button class="cat-btn" onclick="filterProduk('aplikasi', this)">Tema Aplikasi</button>
+            <button class="cat-btn" onclick="filterProduk('kartun', this)">Tema Kartun</button>
+            <button class="cat-btn" onclick="filterProduk('lainnya', this)">Tema</button>
+        </nav>
+
+        <main class="product-grid" id="productGrid">
+        </main>
+    </div>
+
+    <div id="productModal" class="modal-overlay" onclick="closeModalOnOutside(event)">
+        <div class="modal-card">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h3 id="modalProductName" class="modal-header-text">Nama Produk Digital</h3>
+
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev-btn" onclick="prevSlide(event)">‹</button>
+                <div class="carousel-track" id="carouselTrack"></div>
+                <button class="carousel-btn next-btn" onclick="nextSlide(event)">›</button>
+            </div>
+            <div class="carousel-dots" id="carouselDots"></div>
+
+            <div id="modalProductPrice" class="modal-price-text">Rp. 10.000</div>
+
+            <div id="modalDescriptions" class="modal-descriptions"></div>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal-overlay" onclick="closeProfileModalOnOutside(event)">
+        <div class="modal-card profile-card">
+            <span class="modal-close" onclick="closeProfileModal()">&times;</span>
+            <div class="profile-header">
+                <div class="profile-avatar-wrap" onclick="openLogoLightbox()"
+                    title="Klik untuk melihat foto logo lengkap">
+                    <img src="logoaplikasi/logotoko.png" alt="Logo ShadowStore" class="profile-avatar">
+                    <span class="avatar-zoom-badge">🔍</span>
+                </div>
+                <h2 class="profile-title">
+                    <span class="logo-shadow">Shadow</span><span class="logo-store">Store</span>
+                </h2>
+                <div class="profile-badge">Toko Digital Terverifikasi</div>
+                <p class="profile-tagline">Solusi Kebutuhan Desain, Template Presentasi & Produk Digital Kreatif</p>
+            </div>
+
+            <div class="profile-bio-box">
+                <h4 class="profile-section-title">Biodata & Informasi Toko</h4>
+                <div class="profile-bio-list">
+                    <div class="profile-bio-item">
+                        <span class="bio-icon">🏪</span>
+                        <div class="bio-detail">
+                            <span class="bio-label">Nama Toko</span>
+                            <span class="bio-val">ShadowStore</span>
+                        </div>
+                    </div>
+                    <div class="profile-bio-item">
+                        <span class="bio-icon">🎨</span>
+                        <div class="bio-detail">
+                            <span class="bio-label">Kategori Produk</span>
+                            <span class="bio-val">Template Canva, PowerPoint, Tema Game, Anime, Icon Pack</span>
+                        </div>
+                    </div>
+                    <div class="profile-bio-item">
+                        <span class="bio-icon">⚡</span>
+
+                        <div class="bio-detail">
+                            <span class="bio-label">Layanan</span>
+                            <span class="bio-val">File Siap Pakai, Fast Response, Panduan & Konsultasi</span>
+                        </div>
+                    </div>
+                    <div class="profile-bio-item">
+                        <span class="bio-icon">🛡️</span>
+                        <div class="bio-detail">
+                            <span class="bio-label">Kualitas & Keamanan</span>
+                            <span class="bio-val">100% Produk Original & Teruji</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-sosmed-box">
+                <h4 class="profile-section-title">Media Sosial Resmi</h4>
+                <div class="sosmed-grid">
+                    <div class="sosmed-card wa-card" onclick="bukaSosmed('whatsapp')" title="Hubungi via WhatsApp">
+                        <span class="sosmed-icon-wrap wa-icon-wrap">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                <path
+                                    d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.155.57 4.175 1.564 5.922l-1.564 5.906 6.053-1.587c1.707.933 3.669 1.465 5.753 1.465 6.627 0 12-5.373 12-12s-5.373-12-12-12z" />
+                            </svg>
+                        </span>
+                        <div class="sosmed-info">
+                            <span class="sosmed-name">WhatsApp</span>
+                            <span class="sosmed-handle">Chat Resmi Toko</span>
+                        </div>
+                        <span class="sosmed-arrow">↗</span>
+                    </div>
+
+                    <div class="sosmed-card ig-card" onclick="bukaSosmed('instagram')" title="Buka Instagram Toko">
+                        <span class="sosmed-icon-wrap ig-icon-wrap">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                        </span>
+                        <div class="sosmed-info">
+                            <span class="sosmed-name">Instagram</span>
+                            <span class="sosmed-handle">Lihat Postingan</span>
+                        </div>
+                        <span class="sosmed-arrow">↗</span>
+                    </div>
+
+                    <div class="sosmed-card tt-card" onclick="bukaSosmed('tiktok')" title="Buka TikTok Toko">
+                        <span class="sosmed-icon-wrap tt-icon-wrap">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                <path
+                                    d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.29 0 .58.04.86.12V9.4a6.33 6.33 0 0 0-.86-.06 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 9.77 5.34 6.3 6.3 0 0 0 2.92-5.36V8.75a8.28 8.28 0 0 0 4.76 1.49V6.79c-1.39-.01-2.7-.42-3.8-1.1z" />
+                            </svg>
+                        </span>
+                        <div class="sosmed-info">
+                            <span class="sosmed-name">TikTok</span>
+                            <span class="sosmed-handle">Video & Tutorial</span>
+                        </div>
+                        <span class="sosmed-arrow">↗</span>
+                    </div>
+
+                    <div class="sosmed-card cc-card" onclick="bukaSosmed('capcut')" title="Buka CapCut Toko">
+                        <span class="sosmed-icon-wrap cc-icon-wrap">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 7h6l6 6-6 6H3" />
+                                <path d="M21 7h-6l-2 2" />
+                                <path d="M21 17h-6l-2-2" />
+                            </svg>
+                        </span>
+                        <div class="sosmed-info">
+                            <span class="sosmed-name">CapCut</span>
+                            <span class="sosmed-handle">Template Video</span>
+                        </div>
+                        <span class="sosmed-arrow">↗</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="logoLightbox" class="lightbox-overlay" onclick="closeLogoLightboxOnOutside(event)">
+        <div class="lightbox-card">
+            <span class="lightbox-close" onclick="closeLogoLightbox()">&times;</span>
+            <img src="logoaplikasi/logotoko.png" alt="Logo Lengkap ShadowStore" class="lightbox-img">
+            <div class="lightbox-info">
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
