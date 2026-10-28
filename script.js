@@ -185,7 +185,7 @@ const daftarProduk = [
     {
         id: 6,
         nama: "Joki Makalah",
-        harga: "Rp. 1.000 / Halaman",
+        harga: "Harga / Halaman",
         aplikasi: "word",
         gambar: [
             ""
@@ -193,9 +193,10 @@ const daftarProduk = [
         kategori: "lainnya",
         keterangan: [
             "✓ Joki Makalah Word",
-            "✓ Untuk Tugas Sekolah, Kuliah, dan Lainnya",
-            "✓ Revisi Hingga Puas",
-            "✓ Harga Terjangkau",
+            "✓ Rp.1.000 / Halaman (Materi Disediakan Customers)",
+            "✓ Rp.2.000 / Halaman (Materi Kami Cari Sendiri)",
+            "✓ Revisi Hingga Puas (Rp.5.000 / revisi)",
+            "✓ Cocok Untuk Tugas Sekolah, Kuliah, Dan Lainnya",
             "!!! FILE HASIL AKAN DIKIRIM SETELAH DILAKUKAN PEMBAYARAN !!!"
         ],
         templateWA: `Halo kak! Saya mau pesan *Joki Makalah Word* dari ShadowStore`
